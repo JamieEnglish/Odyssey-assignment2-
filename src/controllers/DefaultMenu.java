@@ -1,7 +1,12 @@
 package controllers;
 
+import java.util.Collection;
+
 import asg.cliche.Command;
 import asg.cliche.Param;
+import edu.princeton.cs.introcs.StdIn;
+import edu.princeton.cs.introcs.StdOut;
+import models.Movie;
 import models.User;
 
 public class DefaultMenu {
@@ -30,6 +35,23 @@ public class DefaultMenu {
 			@Param(name="id") Long UserID){
 		Odyssey.getRating(UserID);
 	}
+	
+	@Command(description="Get all movies")
+	public void getMovies()
+	{
+		Collection<Movie> movies = Odyssey.getMovies();
+	    System.out.println(movies);
+	}
+	
+	@Command(description="Search a movie")
+	public void searchMovies() {
+		
+	        StdOut.println("Enter your search:");
+	        String prefix = StdIn.readString();
+	        System.out.println(Odyssey.searchMovies(prefix));
+	}
+	
+	
 	
 	public String getName() 
 	{

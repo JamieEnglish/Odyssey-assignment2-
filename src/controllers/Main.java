@@ -44,7 +44,7 @@ public class Main implements ShellDependent
 	  
 	@Command(description = "Log in")
 	  public void logIn(
-			  @Param(name = "user name") String username, 
+			  @Param(name = "username") String username, 
 			  @Param(name = "password") String password)
 	      throws IOException {
 
@@ -74,13 +74,6 @@ public class Main implements ShellDependent
         @Param(name= "Password") String password,
         @Param(name= "role") String role){
         Odyssey.addUser(firstName, lastName, age, gender, occupation, zipCode, userName, password, role);}
-	
-	@Command(description="Get all users details")
-	public void getUsers()
-	{
-		Collection<User> users = Odyssey.getUsers();
-	    System.out.println(users);
-	}
 	
 	public static void main(String [] args) throws Exception
 	{

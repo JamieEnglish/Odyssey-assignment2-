@@ -1,11 +1,14 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.List;
 
 import utils.CSVLoader;
@@ -38,19 +41,19 @@ public class OdysseyAPI
 	{
 		CSVLoader loader = new CSVLoader();
 		
-		List <User> users = loader.loadUsers("moviedata_small/users5.dat");
+		List <User> users = loader.loadUsers("data_movieLens/users.dat");
 		for(User user: users)
 		{
 			userIndex.put(user.UserID, user);
 		}
 		
-		List<Movie> movies = loader.loadMovies("moviedata_small/items5.dat");
+		List<Movie> movies = loader.loadMovies("data_movieLens/items.dat");
 		for(Movie movie: movies)
 		{
 			movieIndex.put(movie.MovieID, movie);
 		}
 		
-		List<Rating> ratings = loader.loadRatings("moviedata_small/ratings5.dat");
+		List<Rating> ratings = loader.loadRatings("data_movieLens/ratings.dat");
 		for(Rating rating: ratings)
 		{
 			ratingIndex.put(rating.UserID, rating);
@@ -62,7 +65,7 @@ public class OdysseyAPI
 	  {
 	    serializer.read();
 	    userIndex = (Map<Long, User>) serializer.pop();
-	    usernameIndex = (Map<String, User>) serializer.pop();
+	   // usernameIndex = (Map<String, User>) serializer.pop();
 	    movieIndex = (Map<Long, Movie>) serializer.pop();
 	    ratingIndex = (Map<Long, Rating>) serializer.pop();
 	    User.counter = (Long) serializer.pop();
@@ -77,7 +80,7 @@ public class OdysseyAPI
 		serializer.push(userIndex);
 	    serializer.push(movieIndex);
 	    serializer.push(ratingIndex);
-	    serializer.push(usernameIndex);
+	   // serializer.push(usernameIndex);
 	    serializer.write(); 
 	  }
 	
@@ -181,5 +184,20 @@ public class OdysseyAPI
 	      currentuser = Optional.absent();
 	    }
 	  }
+	
+	public List<Movie> searchMovies(String prefix)
+    {
+        Preconditions.checkNotNull(prefix);
+        List<Movie> searchMovies = new ArrayList<>(movieIndex.values());
+        return filter(searchMovies, prefix);
+    }
+
+    private static List<Movie> filter(final Collection<Movie> source, final String prefix) 
+    {
+        Preconditions.checkNotNull(source);
+        Preconditions.checkNotNull(prefix);
+
+        return source.stream().filter(item -> item.title.toLowerCase().startsWith(prefix.toLowerCase())).collect(Collectors.toList());
+}
 	
 }

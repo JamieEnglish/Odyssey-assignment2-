@@ -41,7 +41,7 @@ public class UserTest {
 	
 	@Test
 	public void testToString() {
-		assertEquals("User{" + myself.UserID + ", jamie, english, 22, M, Student, 00010}"
+		assertEquals("User{" + myself.UserID + ", jamie, english, 22, M, Student, 00010, jayo, secret, default}"
 
 		, myself.toString());
 	}
